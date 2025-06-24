@@ -58,4 +58,4 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build the Docusaurus site
-        run: yarn build
+        run: yarn build && du -hs build
