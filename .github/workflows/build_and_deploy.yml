@@ -85,7 +85,7 @@ jobs:
           fi
           # Put environment in SFTP mode, because we're using rsync to move files up
           terminus connection:set ${{ inputs.PANTHEON_SITE_ID }}.helpdocs sftp
-         	terminus self:plugin:install terminus-rsync-plugin
+          terminus self:plugin:install terminus-rsync-plugin
           mv ./build ./helpdocs          
           terminus rsync ./helpdocs ${{ inputs.PANTHEON_SITE_ID }}.helpdocs:/
           terminus env:commit --message "Production build of helpdocs" --force -- ${{ inputs.PANTHEON_SITE_ID }}.helpdocs
