@@ -49,15 +49,15 @@ jobs:
       - name: Pantheon, check environment and deploy helpdocs
         run: |
           # Check for helpdocs environment in Pantheon, create one if not found
-          PANTHEON_ENV_LIST="$(terminus env:list "${{ inputs.PANTHEON_SITE_ID }}" --format=list | xargs)"
+          PANTHEON_ENV_LIST="$(terminus env:list "${{ vars.PANTHEON_SITE_ID }}" --format=list | xargs)"
           DEV_SITE_EXISTS="$(echo "$PANTHEON_ENV_LIST" | grep "helpdocs" | wc -l | xargs)"
           if [ "$DEV_SITE_EXISTS" -eq "0" ]; then
-            terminus multidev:create --no-interaction --no-ansi ${{ inputs.PANTHEON_SITE_ID }}.dev helpdocs
-            terminus lock:enable ${{ inputs.PANTHEON_SITE_ID }}.helpdocs -- "${{ secrets.PANTHEON_AUTH_USER }}" "${{ secrets.PANTHEON_AUTH_PASSWORD }}"
+            terminus multidev:create --no-interaction --no-ansi ${{ vars.PANTHEON_SITE_ID }}.dev helpdocs
+            terminus lock:enable ${{ vars.PANTHEON_SITE_ID }}.helpdocs -- "${{ secrets.PANTHEON_AUTH_USER }}" "${{ secrets.PANTHEON_AUTH_PASSWORD }}"
           fi
           # Put environment in SFTP mode, because we're using rsync to move files up
-          terminus connection:set ${{ inputs.PANTHEON_SITE_ID }}.helpdocs sftp
+          terminus connection:set ${{ vars.PANTHEON_SITE_ID }}.helpdocs sftp
           terminus self:plugin:install terminus-rsync-plugin
           mv ./build ./helpdocs          
-          terminus rsync ./helpdocs ${{ inputs.PANTHEON_SITE_ID }}.helpdocs:/
-          terminus env:commit --message "Production build of helpdocs" --force -- ${{ inputs.PANTHEON_SITE_ID }}.helpdocs
+          terminus rsync ./helpdocs ${{ vars.PANTHEON_SITE_ID }}.helpdocs:/
+          terminus env:commit --message "Production build of helpdocs" --force -- ${{ vars.PANTHEON_SITE_ID }}.helpdocs
