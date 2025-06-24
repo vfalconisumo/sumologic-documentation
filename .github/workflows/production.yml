@@ -57,6 +57,7 @@ jobs:
           fi
           # Put environment in SFTP mode, because we're using rsync to move files up
           terminus connection:set ${{ vars.PANTHEON_SITE_ID }}.helpdocs sftp
+          echo "StrictHostKeyChecking no" > ~/.ssh/config
           terminus self:plugin:install terminus-rsync-plugin
           mv ./build ./helpdocs          
           terminus rsync ./helpdocs ${{ vars.PANTHEON_SITE_ID }}.helpdocs:/
