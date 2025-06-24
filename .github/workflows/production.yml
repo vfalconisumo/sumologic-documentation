@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy-to-staging:
-    uses: ./build_and_deploy.yml
+    uses: ./.github/workflows/build_and_deploy.yml
     with:
       hostname: https://help.sumologic.com
       environment: production
