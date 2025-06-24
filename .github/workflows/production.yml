@@ -14,3 +14,9 @@ jobs:
     with:
       hostname: https://help.sumologic.com
       environment: production
+    secrets:
+      PANTHEON_SSH_KEY: ${{ secrets.PANTHEON_SSH_KEY }}
+      PANTHEON_KNOWN_HOSTS: ${{ secrets.PANTHEON_KNOWN_HOSTS }}
+      PANTHEON_MACHINE_TOKEN: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
+      PANTHEON_AUTH_USER: ${{ secrets.PANTHEON_AUTH_USER }}
+      PANTHEON_AUTH_PASSWORD: ${{ secrets.PANTHEON_AUTH_PASSWORD }}
