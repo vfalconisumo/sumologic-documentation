@@ -74,7 +74,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build the Docusaurus site
         run: yarn build
-      - name: Pantheon environment setup
+      - name: Pantheon, check environment and deploy helpdocs
         run: |
           # Check for helpdocs environment in Pantheon, create one if not found
           PANTHEON_ENV_LIST="$(terminus env:list "${{ inputs.PANTHEON_SITE_ID }}" --format=list | xargs)"
@@ -85,8 +85,6 @@ jobs:
           fi
           # Put environment in SFTP mode, because we're using rsync to move files up
           terminus connection:set ${{ inputs.PANTHEON_SITE_ID }}.helpdocs sftp
-      - name: Deploy site to helpdocs environment
-        run: |
          	terminus self:plugin:install terminus-rsync-plugin
           mv ./build ./helpdocs          
           terminus rsync ./helpdocs ${{ inputs.PANTHEON_SITE_ID }}.helpdocs:/
