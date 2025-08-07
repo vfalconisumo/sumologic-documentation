@@ -75,6 +75,7 @@ jobs:
           terminus local:commitAndPush --yes sumo-logic-sandbox
           terminus auth:logout
       - name: Get runner IP
+        if: always()
         id: ip
         uses: haythem/public-ip@v1.3
       - name: Set env vars
