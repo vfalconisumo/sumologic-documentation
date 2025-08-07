@@ -72,7 +72,7 @@ jobs:
           terminus auth:login --machine-token ${{ secrets.PANTHEON_MACHINE_TOKEN }}
           terminus local:clone --yes ${{ vars.PANTHEON_SITE_ID }}
           mv ./build "$HOME/pantheon-local-copies/${{ vars.PANTHEON_SITE_ID }}/help"
-          terminus local:commitAndPush --yes sumo-logic-sandbox
+          terminus -vvvv local:commitAndPush --yes sumo-logic-sandbox
           terminus auth:logout
       - name: Get runner IP
         if: always()
