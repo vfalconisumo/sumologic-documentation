@@ -67,11 +67,18 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build the Docusaurus site
         run: yarn build
+      - name: TEMP - build artifact
+        run: tar cvzf build.tar.gz ./build
+      - name: TEMP - Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build archive
+          path: ./build.tar.gz
       - name: Pantheon, check environment and deploy helpdocs
         run: |
           terminus auth:login --machine-token ${{ secrets.PANTHEON_MACHINE_TOKEN }}
           terminus local:clone --yes ${{ vars.PANTHEON_SITE_ID }}
-          mv ./build "$HOME/pantheon-local-copies/${{ vars.PANTHEON_SITE_ID }}/help"
+          touch "$HOME/pantheon-local-copies/${{ vars.PANTHEON_SITE_ID }}/build-test.txt"
           terminus -vvvv local:commitAndPush --yes sumo-logic-sandbox
           terminus auth:logout
       - name: Get runner IP
