@@ -69,7 +69,7 @@ jobs:
         run: yarn build
       - name: Pantheon, check environment and deploy helpdocs
         run: |
-          terminus auth:login --machine-token ${{ secrets.PANTHEON_MACHINE_TOKEN }} --email ${{ secrets.
+          terminus auth:login --machine-token ${{ secrets.PANTHEON_MACHINE_TOKEN }}
           terminus local:clone --yes ${{ vars.PANTHEON_SITE_ID }}
           mv ./build "$HOME/pantheon-local-copies/${{ vars.PANTHEON_SITE_ID }}/help
           terminus local:commitAndPush --yes sumo-logic-sandbox
