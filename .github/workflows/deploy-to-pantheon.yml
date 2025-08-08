@@ -70,23 +70,17 @@ jobs:
       - name: Build the Docusaurus site
         run: |
           yarn build
-          mkdir deploy
-          mv ./build ./deploy/help
-      - name: Push to Pantheon
-        uses: pantheon-systems/push-to-pantheon@0.7.0
-        with:
-          ssh_key: ${{ secrets.PANTHEON_SSH_KEY }}
-          machine_token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
-          site: ${{ vars.PANTHEON_SITE_ID_MACHINE }}
-          relative_site_root: deploy
-      #- name: Pantheon, check environment and deploy helpdocs
-      #  run: |
-      #    git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
-      #    terminus auth:login --machine-token ${{ secrets.PANTHEON_MACHINE_TOKEN }}
-      #    terminus local:clone --yes ${{ vars.PANTHEON_SITE_ID }}
-      #    touch "$HOME/pantheon-local-copies/${{ vars.PANTHEON_SITE_ID }}/build-test.txt"
-      #    terminus local:commitAndPush --yes sumo-logic-sandbox
-      #    terminus auth:logout
+          mv ./build ./help
+      - name: Pantheon, check environment and deploy helpdocs
+        run: |
+          git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
+          git config --global user.email "${PANTHEON_USER_EMAIL}"
+          git config --global user.name "GitHub workflow"
+          terminus auth:login --machine-token ${{ secrets.PANTHEON_MACHINE_TOKEN }}
+          terminus local:clone --yes ${{ vars.PANTHEON_SITE_ID }}
+          touch "$HOME/pantheon-local-copies/${{ vars.PANTHEON_SITE_ID }}/build-test.txt"
+          terminus local:commitAndPush --yes sumo-logic-sandbox
+          terminus auth:logout
       - name: Get runner IP
         if: always()
         id: ip
