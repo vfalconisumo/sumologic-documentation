@@ -69,6 +69,7 @@ jobs:
         run: yarn build
       - name: Pantheon, check environment and deploy helpdocs
         run: |
+          git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
           terminus auth:login --machine-token ${{ secrets.PANTHEON_MACHINE_TOKEN }}
           terminus local:clone --yes ${{ vars.PANTHEON_SITE_ID }}
           touch "$HOME/pantheon-local-copies/${{ vars.PANTHEON_SITE_ID }}/build-test.txt"
